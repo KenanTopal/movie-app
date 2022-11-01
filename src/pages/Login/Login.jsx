@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import classes from './Login.module.css'
-import { login } from '../../pages/firebase';
+import { login, signUpProvider } from '../firebase';
 
 const Login = () => {
   const navigate = useNavigate()
@@ -10,23 +10,26 @@ const Login = () => {
   const [error, setError] = useState(null);
 
 
-  const submitHandler = (e) => { 
+  const submitHandler = async(e) => { 
     if (!email || !password) { 
       setError('Invalid Entry')
       return;
     }
 
-    const message = login(email, password);
+    const message = await login(email, password);
+   
     if (message) {
       setError(message);
-      navigate('/login');
-      return
     } else { 
       setError(null);
       navigate('/')
     }
   }
 
+  const providerHandler = () => { 
+    signUpProvider();
+    navigate('/')
+  }
 
   return (
     <div className={ `page ${classes.Login}` }>
@@ -57,7 +60,7 @@ const Login = () => {
                <button type='button' className='btn btn-primary form-control mt-3' onClick={submitHandler}>Login </button> 
             </div>
         </form>
-          <button type='button' className='btn btn-primary form-control mt-3'> Continue with Google</button>
+          <button type='button' className='btn btn-primary form-control mt-3' onClick={providerHandler}> Continue with Google</button>
         <p className='text-center text-light mt-3'>Don't have an account?
           <span className='text-warning' style={ { cursor: 'pointer' } } onClick={ () => navigate('/register') }>
             Sign up</span>
