@@ -1,4 +1,4 @@
-.Login{
+.Register{
   background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../../assets/login.jpg');
   height: calc(100vh - 60px);
   background-size: cover;
@@ -9,7 +9,7 @@
   
 }
 
-.LoginForm{
+.RegisterForm{
   background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8));
   padding: 2rem;
   border-radius: 10px;
@@ -17,12 +17,12 @@
   animation: 0.5s zoomin ease-in-out;
 }
 
-.LoginForm h1{
+.RegisterForm h1{
   color: white;
   text-align: center;
 }
 
-.LoginForm input, .LoginForm input:focus{
+.RegisterForm input, .RegisterForm input:focus{
   background-color: transparent;
   color: white;
 }
