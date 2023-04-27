@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import classes from './Register.module.css'
+import classes from './Register.module.css';
+import { registerUser, signUpProvider } from '../../firebase';
 
 
 const Register = () => {
@@ -8,11 +9,33 @@ const Register = () => {
   const [email,setEmail] = useState();
   const [name,setName] = useState();
   const [password,setPassword] = useState();
+  const [error, setError] = useState();
+
+
+  const submitHandler = async()=>{
+    if(!name || !email || !password){
+      setError('Invalid Entry')
+      return;
+    } 
+    const message = await registerUser(email, password, name)
+    if(message){
+      setError(message)
+    } else{
+      setError(null)
+      navigate('/login')
+    }
+  }
+
+  const providerHandler = () => {
+    signUpProvider();
+    navigate('/')
+  }
   
   return (
     <div className={`${classes.Register} page`}>
       <div className={`${classes.RegisterForm}`}>
         <h1>Sign Up</h1>
+        {error&&<p className='text-danger text-center m-3'>{error}</p>}
         <form>
           <div className='mb-3'>
             <label htmlFor="name" className='form-label text-light'>Name</label>
@@ -22,7 +45,7 @@ const Register = () => {
               autoComplete='off'
               placeholder='Enter your name'
               value={name}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className='mb-3'>
@@ -49,12 +72,12 @@ const Register = () => {
           </div>
           
           <div className='d-grid'>
-            <button type='button' className='btn btn-primary form-control mt-3'>Sign Up</button>
+            <button type='button' className='btn btn-primary form-control mt-3' onClick={submitHandler}>Sign Up</button>
           </div>
 
         </form>
 
-        <button type='button' className='btn btn-primary form-control mt-3'> Continue with Google</button>
+        <button type='button' className='btn btn-primary form-control mt-3' onClick={providerHandler}> Continue with Google</button>
         <p className='text-center text-light mt-3'>
           Have an account? <span className='text-warning' style={{ cursor: 'pointer' }} onClick={()=>navigate('/login')}>Login</span>
         </p>
